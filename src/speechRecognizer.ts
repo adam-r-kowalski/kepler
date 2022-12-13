@@ -3,6 +3,7 @@ import { createSignal } from "solid-js"
 interface SpeechRecognizer {
     transcript: () => string
     isListening: () => boolean
+    isActive: () => boolean
     isError: () => boolean
     toggle: () => void
 }
@@ -49,6 +50,7 @@ export const createSpeechRecognizer = (props: Props): SpeechRecognizer => {
     const [transcript, setTranscript] = createSignal("")
     const [isListening, setIsListening] = createSignal(false)
     const [isError, setIsError] = createSignal(false)
+    const [isActive, setIsActive] = createSignal(false)
     const SpeechRecognition =
         window.SpeechRecognition || window.webkitSpeechRecognition
     const recognition = new SpeechRecognition()
@@ -76,7 +78,7 @@ export const createSpeechRecognizer = (props: Props): SpeechRecognizer => {
     }
 
     recognition.onstart = () => {
-        setTimeout(() => setIsListening(true), 1000)
+        setIsListening(true)
     }
 
     const toggle = () => {
@@ -90,6 +92,7 @@ export const createSpeechRecognizer = (props: Props): SpeechRecognizer => {
     return {
         transcript,
         isListening,
+        isActive,
         isError,
         toggle,
     }

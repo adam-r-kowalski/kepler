@@ -8,6 +8,8 @@ export const Prompt = () => {
     const color = () => {
         if (speechRecognizer.isListening()) {
             return "green"
+        } else if (speechRecognizer.isActive()) {
+            return "blue"
         } else if (speechRecognizer.isError()) {
             return "red"
         } else {
