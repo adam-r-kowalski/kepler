@@ -6,13 +6,13 @@ from uuid import UUID
 from chat_session import server
 from chat_session.datatypes import (
     entities,
-    issues,
+    topics,
     calls,
     sessions,
 )
 from chat_session.server import (
     retrieve_or_create_account_and_get_uuid,
-    get_issue_uuid,
+    get_topic_uuid,
     start_session_and_get_uuid,
     start_call_and_get_websocket_url,
 )
@@ -21,7 +21,7 @@ from chat_session.server import (
 @pytest.fixture(autouse=True)
 def clear_dictionaries():
     entities.clear()
-    issues.clear()
+    topics.clear()
     calls.clear()
     sessions.clear()
 
@@ -51,13 +51,13 @@ def is_valid_uuid(uuid_to_test: UUID) -> bool:
 
 
 """
-def test_returning_customer_with_open_issue(retrieved_customer_uuid: str):
+def test_returning_customer_with_open_topic(retrieved_customer_uuid: str):
     # TODO: check known customer is retrieved
     # customer_uuid = retrieved_customer_uuid
     # assert len(entities) == 1
     # assert entities[customer_uuid].entity_type == "CUSTOMER"
-    # assert len(entities[customer_uuid].issue_uuids) == 1
-    # assert entities[customer_uuid].current_issue_uuid is not None
+    # assert len(entities[customer_uuid].topic_uuids) == 1
+    # assert entities[customer_uuid].current_topic_uuid is not None
     #customer_uuid = requests.get(server_url + '/dial_in').json()
     #assert re.match(uuid_regex, customer_uuid)
     assert True
@@ -65,7 +65,7 @@ def test_returning_customer_with_open_issue(retrieved_customer_uuid: str):
 
 
 """
-def test_returning_customer_with_new_issue(retrieved_customer_uuid: str):
+def test_returning_customer_with_new_topic(retrieved_customer_uuid: str):
     assert True
 """
 
