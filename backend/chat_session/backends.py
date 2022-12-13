@@ -1,10 +1,10 @@
 import openai
 import os
-from typing import List, Protocol
+from typing import Protocol
 
 
 class Backend(Protocol):
-    def query(self, query: str) -> str:
+    def query(self, prompt: str) -> str:
         ...
 
 
@@ -24,7 +24,3 @@ class Gpt3Backend:
         )
         response = response.choices[0].text
         return response
-
-
-def get_backends() -> List[Backend]:
-    return [Gpt3Backend]
