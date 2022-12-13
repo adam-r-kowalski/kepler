@@ -36,22 +36,30 @@ export const App = () => {
                 margin: "0 auto",
             }}
         >
-            <Messages>
-                <For each={messages()}>
-                    {(message) => {
-                        return (
-                            <Switch>
-                                <Match when={message.kind === "sent"}>
-                                    <Sent>{message.text}</Sent>
-                                </Match>
-                                <Match when={message.kind === "received"}>
-                                    <Received>{message.text}</Received>
-                                </Match>
-                            </Switch>
-                        )
-                    }}
-                </For>
-            </Messages>
+            <div
+                style={{
+                    "overflow-y": "scroll",
+                    display: "flex",
+                    "flex-direction": "column-reverse",
+                }}
+            >
+                <Messages>
+                    <For each={messages()}>
+                        {(message) => {
+                            return (
+                                <Switch>
+                                    <Match when={message.kind === "sent"}>
+                                        <Sent>{message.text}</Sent>
+                                    </Match>
+                                    <Match when={message.kind === "received"}>
+                                        <Received>{message.text}</Received>
+                                    </Match>
+                                </Switch>
+                            )
+                        }}
+                    </For>
+                </Messages>
+            </div>
             <Prompt onSend={onSend} />
         </div>
     )

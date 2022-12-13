@@ -9,7 +9,13 @@ interface Props {
 }
 
 export const Prompt = (props: Props) => {
-    const speechRecognizer = createSpeechRecognizer(props.onSend)
+    const onSend = () => {
+        if (textarea!.value === "") return
+        props.onSend(textarea!.value)
+        textarea!.value = ""
+        textarea!.rows = 1
+    }
+    const speechRecognizer = createSpeechRecognizer(onSend)
     const color = () => {
         if (speechRecognizer.isListening()) {
             return "green"
@@ -22,14 +28,10 @@ export const Prompt = (props: Props) => {
         }
     }
     let textarea: HTMLTextAreaElement | undefined = undefined
-    const onSend = () => {
-        props.onSend(textarea!.value)
-        textarea!.value = ""
-        textarea!.rows = 1
-    }
     const onkeydown = (event: KeyboardEvent) => {
         if (event.key === "Enter") {
             if (!event.shiftKey) {
+                event.preventDefault()
                 onSend()
             } else {
                 textarea!.rows += 1
