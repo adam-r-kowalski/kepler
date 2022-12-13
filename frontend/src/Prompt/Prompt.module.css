@@ -6,9 +6,10 @@
     border-radius: 10px 10px 0px 10px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     align-self: flex-end;
     gap: 5px;
+    margin-top: 20px;
 }
 
 .text {
@@ -18,4 +19,17 @@
     resize: none;
     font-size: 20px;
     color: white;
+}
+
+.text::-webkit-scrollbar {
+    display: none;
+}
+
+.text::placeholder {
+    color: #ffffff77;
+}
+
+.icon {
+    margin-bottom: 5px;
+    cursor: pointer;
 }

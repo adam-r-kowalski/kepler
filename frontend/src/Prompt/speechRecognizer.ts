@@ -42,11 +42,9 @@ declare global {
     var webkitSpeechRecognition: SpeechRecognition
 }
 
-interface Props {
-    onResult: (transcript: string) => void
-}
+type OnSend = (message: string) => void
 
-export const createSpeechRecognizer = (props: Props): SpeechRecognizer => {
+export const createSpeechRecognizer = (onSend: OnSend): SpeechRecognizer => {
     const [transcript, setTranscript] = createSignal("")
     const [isListening, setIsListening] = createSignal(false)
     const [isError, setIsError] = createSignal(false)
@@ -70,7 +68,7 @@ export const createSpeechRecognizer = (props: Props): SpeechRecognizer => {
         const index = event.results.length - 1
         const result: SpeechRecognitionResult = event.results[index]
         if (result.isFinal) {
-            props.onResult(result[0].transcript)
+            onSend(result[0].transcript)
             setTranscript("")
         } else {
             setTranscript(result[0].transcript)
