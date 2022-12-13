@@ -1,0 +1,18 @@
+.message {
+    background-color: white;
+    color: black;
+    width: fit-content;
+    padding: 10px 20px;
+    border-radius: 10px 10px 10px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+.sent {
+    background-color: #1e90ff;
+    color: white;
+    border-radius: 10px 10px 0px 10px;
+    align-self: flex-end;
+}
