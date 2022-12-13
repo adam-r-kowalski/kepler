@@ -4,7 +4,7 @@ from chat_session.backends import Gpt3QuestionBackend
 from chat_session.robots.call_center_agent import CallCenterAgent
 
 
-def test_call_center_agent():
+def demo_call_center_agent():
     company_name = "Brain Chips R Us"
     company_info = (
         "Brain Chips R Us provides the highest end of consumer brain computer interface (BCI) implants."
@@ -19,3 +19,7 @@ def test_call_center_agent():
         prompt = input("Customer: ")
         response = robot.prompt(prompt)
         print(f"Agent: {response}")
+
+
+if __name__ == "__main__":
+    demo_call_center_agent()
