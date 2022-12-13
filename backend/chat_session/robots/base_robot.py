@@ -12,5 +12,5 @@ class Robot:
         self.backend = backend
 
     def prompt(self, prompt: str) -> str:
-        response = self.backend.query(prompt)
+        response = self.backend.prompt(prompt)
         return response
