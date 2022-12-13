@@ -15,6 +15,7 @@ class CallCenterAgent(Robot):
         self.conversation = []
         self.verifying_categorization = False
         self.category_selection = ""
+        self.call_in_progress = True
 
     def prompt(self, prompt: str) -> str:
         if prompt == "START RESPONSE":
@@ -64,7 +65,14 @@ class CallCenterAgent(Robot):
 
     def _ask_questions(self, context: str) -> str:
         prompt = context + (
-            f"The agent doesn't know which category to choose. Write a question that the agent can ask to learn more."
+            f"The agent doesn't know which category to choose. Write a question that the agent can ask to gain more information."
+            f"The question should be worded in a friendly tone."
+            f"Do not ever repeat a question that was already asked before."
+            f"Do not ask irrelevant questions."
+            f"Do not ask open ended questions."
+            f"The question should be specific and help narrow down which category to choose."
+            f"Do not assume that the customer is familiar with how the company works internally."
+            f"Explain things to the customer if they seem confused."
         )
         question = self.backend.prompt(prompt)
         return question
@@ -94,4 +102,8 @@ class CallCenterAgent(Robot):
             return False
 
     def _transfer_customer(self) -> str:
-        return f"Your call has been classified as {self.category_selection} and you are now being transferred."
+        self.call_in_progress = False
+        return f"Please hold, you are now being transferred."
+
+    def is_in_call(self) -> bool:
+        return self.call_in_progress
