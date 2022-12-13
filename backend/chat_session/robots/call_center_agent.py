@@ -27,13 +27,17 @@ class CallCenterAgent(Robot):
                 response = self._transfer_customer()
             else:
                 self.verifying_categorization = False
-                enough_info = self._has_enough_info(context)
-                if not enough_info:
-                    response = self._ask_questions(context)
+                needs_new_category = self._needs_new_category(context)
+                if needs_new_category:
+                    response = self._transfer_to_human()
                 else:
-                    self.verifying_categorization = True
-                    category = self._find_call_category(context)
-                    response = self._verify_transfer(category)
+                    enough_info = self._has_enough_info(context)
+                    if not enough_info:
+                        response = self._ask_questions(context)
+                    else:
+                        self.verifying_categorization = True
+                        category = self._find_call_category(context)
+                        response = self._verify_transfer(category)
         self.conversation.append(f"Agent: {response}")
         return response
 
@@ -51,6 +55,21 @@ class CallCenterAgent(Robot):
             f""
         )
         return context
+
+    def _needs_new_category(self, context: str) -> bool:
+        prompt = context + (
+            f"Does the customer have a problem which is outside the existing categories?"
+            f"Answer in the form {{\"needs_new_category\": bool}}."
+        )
+        response = self.backend.prompt(prompt)
+        try:
+            return bool(json.loads(response)["needs_new_category"])
+        except Exception:
+            return False
+
+    def _transfer_to_human(self) -> str:
+        self.call_in_progress = False
+        return f"Please hold, you're being transferred to a specialist."
 
     def _has_enough_info(self, context: str) -> bool:
         prompt = context + (
@@ -92,7 +111,7 @@ class CallCenterAgent(Robot):
 
     def _verify_customer_approval(self, context: str) -> bool:
         prompt = context + (
-            f"Has the customer approved the transfer to the {self.category_selection} department?"
+            f"Did the customer agree with the agent's assessment at the end?"
             f"Answer in the form {{\"approved\": bool}}."
         )
         response = self.backend.prompt(prompt)

@@ -50,7 +50,7 @@ class Gpt3ConversationBackend:
             temperature=0.7,
             max_tokens=709,
             top_p=1,
-            frequency_penalty=0,
+            frequency_penalty=10,
             presence_penalty=0
         )
         response = response.choices[0].text
