@@ -10,8 +10,7 @@ from uuid import uuid4, UUID
 
 class EntityType(Enum):
     CUSTOMER = auto()
-    ROBOT_AGENT = auto()
-    HUMAN_AGENT = auto()
+    ROBOT = auto()
 
 
 @dataclass
@@ -38,12 +37,12 @@ class Topic:
     open: bool
     customer_uuid: UUID
     timestamp: float
-    call_uuids: List[UUID]
+    session_uuids: List[UUID]
     agent_uuids: List[UUID]
 
 
 @dataclass
-class Call:
+class Session:
     uuid: UUID
     topic_uuid: UUID
     customer_uuid: UUID
@@ -52,17 +51,8 @@ class Call:
     transcript: List[SpeechFragment]
 
 
-@dataclass
-class Session:
-    uuid: UUID
-    customer_uuid: UUID
-    topic_uuid: UUID
-    timestamp: float
-
-
 entities: Dict[UUID, Entity] = {}
 topics: Dict[UUID, Topic] = {}
-calls: Dict[UUID, Call] = {}
 sessions: Dict[UUID, Session] = {}
 
 
@@ -81,14 +71,9 @@ def _link_topic_and_agent(topic_uuid: UUID, agent_uuid: UUID):
         topics[topic_uuid].agent_uuids.append(agent_uuid)
 
 
-def _link_call_and_topic(call_uuid: UUID, topic_uuid: UUID) -> None:
-    calls[call_uuid].topic_uuid = topic_uuid
-    topics[topic_uuid].call_uuids.append(call_uuid)
-
-
-def _link_session_info(session_uuid: UUID, customer_uuid: UUID, topic_uuid: UUID) -> None:
-    sessions[session_uuid].customer_uuid = customer_uuid
+def _link_session_and_topic(session_uuid: UUID, topic_uuid: UUID) -> None:
     sessions[session_uuid].topic_uuid = topic_uuid
+    topics[topic_uuid].session_uuids.append(session_uuid)
 
 
 # Data creation
@@ -110,7 +95,7 @@ def create_topic_and_link_to_customer(customer_uuid: UUID) -> Topic:
         uuid = uuid4(),
         open = True,
         customer_uuid = customer_uuid,
-        call_uuids = [],
+        session_uuids = [],
         timestamp = time.time(),
         agent_uuids = [],
     )
@@ -119,8 +104,8 @@ def create_topic_and_link_to_customer(customer_uuid: UUID) -> Topic:
     return topic
 
 
-def create_call_and_link_to_topic_and_agent(topic_uuid: UUID, agent_uuid: UUID) -> Call:
-    call = Call(
+def create_session_and_link_to_topic_and_agent(topic_uuid: UUID, agent_uuid: UUID) -> Session:
+    session = Session(
         uuid = uuid4(),
         topic_uuid = topic_uuid,
         customer_uuid = topics[topic_uuid].customer_uuid,
@@ -128,34 +113,22 @@ def create_call_and_link_to_topic_and_agent(topic_uuid: UUID, agent_uuid: UUID) 
         timestamp = time.time(),
         transcript = [],
     )
-    calls[call.uuid] = call
-    _link_call_and_topic(call.uuid, topic_uuid)
-    _link_topic_and_agent(topic_uuid, agent_uuid)
-    return call
-
-
-def create_session(customer_uuid: UUID, topic_uuid: UUID) -> Session:
-    session = Session(
-        uuid = uuid4(),
-        customer_uuid = customer_uuid,
-        topic_uuid = topic_uuid,
-        timestamp = time.time(),
-    )
     sessions[session.uuid] = session
-    _link_session_info(session.uuid, customer_uuid, topic_uuid)
+    _link_session_and_topic(session.uuid, topic_uuid)
+    _link_topic_and_agent(topic_uuid, agent_uuid)
     return session
 
 
 # Helper functions
 
 
-def add_speech_fragment_to_call(entity_uuid: UUID, text: str, call_uuid: UUID) -> None:
+def add_speech_fragment_to_session(entity_uuid: UUID, text: str, session_uuid: UUID) -> None:
     speech_fragment = SpeechFragment(
         entity_uuid = entity_uuid,
         text = text,
         timestamp = time.time(),
     )
-    calls[call_uuid].transcript.append(speech_fragment)
+    sessions[session_uuid].transcript.append(speech_fragment)
 
 
 def get_open_topics() -> List[Topic]:
