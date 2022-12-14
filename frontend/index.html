@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#000000" />
     <title>Kepler</title>
     <style>
@@ -10,9 +10,14 @@
         background-color: #f2f2f2;
         margin: 0;
         font-family: sans-serif;
+        height: 100vh;
+        min-height: -webkit-fill-available;
       }
       * {
         box-sizing: border-box;
+      }
+      #root {
+        height: 100%;
       }
     </style>
   </head>

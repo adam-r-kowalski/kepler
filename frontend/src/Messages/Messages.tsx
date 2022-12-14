@@ -7,5 +7,9 @@ interface Props {
 }
 
 export const Messages = (props: Props) => {
-    return <div class={style.messages}>{props.children}</div>
+    return (
+        <div class={style.scrollable}>
+            <div class={style.messages}>{props.children}</div>
+        </div>
+    )
 }

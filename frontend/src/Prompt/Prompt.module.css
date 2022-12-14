@@ -1,7 +1,6 @@
 .prompt {
     background-color: #bfbfbf;
     color: white;
-    width: fit-content;
     padding: 5px 10px;
     border-radius: 10px 10px 0px 10px;
     display: flex;
@@ -9,7 +8,9 @@
     align-items: flex-end;
     align-self: flex-end;
     gap: 5px;
-    margin-top: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0px auto;
 }
 
 .text {
@@ -19,6 +20,7 @@
     resize: none;
     font-size: 20px;
     color: white;
+    width: 100%;
 }
 
 .text::-webkit-scrollbar {
