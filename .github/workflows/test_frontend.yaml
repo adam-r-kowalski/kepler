@@ -41,6 +41,5 @@ jobs:
 
       - name: Install and Test 🔧
         run: |
-          cd frontend
           pnpm install
           pnpm run test

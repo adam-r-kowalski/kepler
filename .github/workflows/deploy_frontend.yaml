@@ -46,11 +46,10 @@ jobs:
 
       - name: Install and Build 🔧
         run: |
-          cd frontend
           pnpm install
           pnpm run build
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: frontend/dist
+          folder: dist
