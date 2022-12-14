@@ -20,20 +20,25 @@ interface Props {
 
 export const Kepler = (props: Props) => {
     const [messages, setMessages] = createSignal<Message[]>([])
+    const [needsToScroll, setNeedsToScroll] = createSignal(false)
     const send = (text: string) => {
         setMessages([...messages(), { kind: "sent", text }])
         props.backend.send(text)
+        setNeedsToScroll(true)
     }
     props.backend.onreceive((text) => {
         setMessages([...messages(), { kind: "received", text }])
     })
-    for (let i = 0; i < 10; ++i) {
+    for (let i = 0; i < 20; ++i) {
         send(faker.lorem.sentence())
     }
     return (
         <>
             <div class={style.kepler}>
-                <Messages>
+                <Messages
+                    scroll={needsToScroll}
+                    scrolled={() => setNeedsToScroll(false)}
+                >
                     <div style={{ height: "100px" }} />
                     <For each={messages()}>
                         {(message) => {
@@ -50,7 +55,7 @@ export const Kepler = (props: Props) => {
                         }}
                     </For>
                 </Messages>
-                <div style={{ height: "40px" }} />
+                <div style={{ height: "20px", "min-height": "20px" }} />
                 <Prompt onSend={send} />
             </div>
             <Toolbar />
