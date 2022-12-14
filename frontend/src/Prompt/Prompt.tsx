@@ -18,9 +18,9 @@ export const Prompt = (props: Props) => {
     const speechRecognizer = createSpeechRecognizer(onSend)
     const color = () => {
         if (speechRecognizer.isListening()) {
-            return "green"
-        } else if (speechRecognizer.isActive()) {
             return "#1e90ff"
+        } else if (speechRecognizer.isActive()) {
+            return "green"
         } else if (speechRecognizer.isError()) {
             return "red"
         } else {
