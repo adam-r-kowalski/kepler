@@ -3,4 +3,17 @@
     flex-direction: column;
     justify-content: flex-end;
     gap: 20px;
+    max-width: 1000px;
+    width: 100%;
+    margin: 0px auto;
+}
+
+.scrollable {
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.scrollable::-webkit-scrollbar {
+    display: none;
 }
