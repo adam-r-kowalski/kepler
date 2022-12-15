@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker"
 
-import { Backend, type OnMessage } from "./Backend"
+import { LanguageModel, type OnMessage } from "./LanguageModel"
 
-export class MockBackend {
+export class MockLanguageModel {
     callbacks: OnMessage[]
 
     constructor() {

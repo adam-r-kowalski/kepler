@@ -6,7 +6,7 @@ import { Messages } from "../Messages"
 import { Received } from "../Received"
 import { Prompt } from "../Prompt"
 import { Sent } from "../Sent"
-import { Backend } from "../Backend"
+import { LanguageModel } from "../LanguageModel"
 import { Toolbar } from "../Toolbar"
 
 interface Message {
@@ -15,7 +15,7 @@ interface Message {
 }
 
 interface Props {
-    backend: Backend
+    backend: LanguageModel
 }
 
 export const MessageBoard = (props: Props) => {
