@@ -1,12 +1,11 @@
 import { createSignal, For, Match, Switch } from "solid-js"
-import { faker } from "@faker-js/faker"
 
 import style from "./MessageBoard.module.css"
 import { Messages } from "../Messages"
 import { Received } from "../Received"
 import { Prompt } from "../Prompt"
 import { Sent } from "../Sent"
-import { LanguageModel } from "../LanguageModel"
+import { Kepler } from "../Kepler"
 import { Toolbar } from "../Toolbar"
 
 interface Message {
@@ -15,7 +14,7 @@ interface Message {
 }
 
 interface Props {
-    backend: LanguageModel
+    kepler: Kepler
 }
 
 export const MessageBoard = (props: Props) => {
@@ -23,18 +22,15 @@ export const MessageBoard = (props: Props) => {
     const [needsToScroll, setNeedsToScroll] = createSignal(false)
     const send = (text: string) => {
         setMessages([...messages(), { kind: "sent", text }])
-        props.backend.send(text)
+        props.kepler.send(text)
         setNeedsToScroll(true)
     }
-    props.backend.onreceive((text) => {
+    props.kepler.onreceive((text) => {
         setMessages([...messages(), { kind: "received", text }])
     })
-    for (let i = 0; i < 20; ++i) {
-        send(faker.lorem.sentence())
-    }
     return (
         <>
-            <div class={style.kepler}>
+            <div class={style.message_board}>
                 <Messages
                     scroll={needsToScroll}
                     scrolled={() => setNeedsToScroll(false)}
