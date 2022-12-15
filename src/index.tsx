@@ -1,10 +1,10 @@
 /* @refresh reload */
 import { render } from "solid-js/web"
 
-import { Kepler } from "./Kepler"
+import { MessageBoard } from "./MessageBoard"
 import { MockBackend } from "./Backend"
 
 render(
-    () => <Kepler backend={new MockBackend()} />,
+    () => <MessageBoard backend={new MockBackend()} />,
     document.getElementById("root") as HTMLElement
 )

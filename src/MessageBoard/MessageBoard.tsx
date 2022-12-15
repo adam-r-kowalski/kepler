@@ -1,7 +1,7 @@
 import { createSignal, For, Match, Switch } from "solid-js"
 import { faker } from "@faker-js/faker"
 
-import style from "./Kepler.module.css"
+import style from "./MessageBoard.module.css"
 import { Messages } from "../Messages"
 import { Received } from "../Received"
 import { Prompt } from "../Prompt"
@@ -18,7 +18,7 @@ interface Props {
     backend: Backend
 }
 
-export const Kepler = (props: Props) => {
+export const MessageBoard = (props: Props) => {
     const [messages, setMessages] = createSignal<Message[]>([])
     const [needsToScroll, setNeedsToScroll] = createSignal(false)
     const send = (text: string) => {
