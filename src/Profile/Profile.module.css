@@ -4,29 +4,42 @@
     max-width: 1000px;
 }
 
-.api_key {
+.open_ai {
     display: flex;
     flex-direction: column;
     font-size: 18px;
-    max-width: 500px;
     margin-top: 50px;
 }
 
-input {
+h2 {
+    margin-bottom: 10px;
+}
+
+strong {
+    margin-top: 20px;
+}
+
+.secret_key {
     margin-top: 10px;
     font-size: 18px;
     padding: 4px;
     border: 1px solid lightgrey;
     border-radius: 5px;
+    max-width: 700px;
 }
 
-button {
-    width: 100px;
-    align-self: flex-end;
-    padding: 10px;
-    background-color: #1e90ff;
-    color: white;
-    border: none;
+.model {
+    margin-top: 10px;
     font-size: 18px;
-    border-radius: 10px;
+    padding: 4px;
+    border-radius: 5px;
+    max-width: 200px;
+}
+
+.temperature {
+    margin-top: 10px;
+    font-size: 18px;
+    padding: 4px;
+    border-radius: 5px;
+    max-width: 200px;
 }
