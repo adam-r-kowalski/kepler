@@ -1,0 +1,32 @@
+.profile {
+    margin: 70px auto 0 auto;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.api_key {
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+    max-width: 500px;
+    margin-top: 50px;
+}
+
+input {
+    margin-top: 10px;
+    font-size: 18px;
+    padding: 4px;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+}
+
+button {
+    width: 100px;
+    align-self: flex-end;
+    padding: 10px;
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    font-size: 18px;
+    border-radius: 10px;
+}
