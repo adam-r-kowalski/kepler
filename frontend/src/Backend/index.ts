@@ -1,2 +1,3 @@
 export { type Backend } from "./Backend"
-export { MockBackend } from "./Mock"
+export { MockBackend } from "./MockBackend"
+export { ChatGPTBackend } from "./ChatGPTBackend"
