@@ -15,6 +15,7 @@ export class MockLanguageModel {
             callback(response)
         })
     }
+
     onreceive(callback: OnMessage) {
         this.callbacks.push(callback)
     }

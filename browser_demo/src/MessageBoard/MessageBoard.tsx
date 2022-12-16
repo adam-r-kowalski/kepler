@@ -13,21 +13,22 @@ interface Message {
     text: string
 }
 
-interface Props {
-    kepler: Kepler
+interface Prop {
+    kepler_ws: string
 }
 
-export const MessageBoard = (props: Props) => {
+export const MessageBoard = (prop: Prop) => {
     const [messages, setMessages] = createSignal<Message[]>([])
     const [needsToScroll, setNeedsToScroll] = createSignal(false)
+    const kepler_ws = new WebSocket(prop.kepler_ws)
     const send = (text: string) => {
         setMessages([...messages(), { kind: "sent", text }])
-        props.kepler.send(text)
+        kepler_ws.send(text)
         setNeedsToScroll(true)
     }
-    props.kepler.onreceive((text) => {
-        setMessages([...messages(), { kind: "received", text }])
-    })
+    kepler_ws.onmessage = (event) => {
+        setMessages([...messages(), { kind: "received", text: event.data }])
+    }
     return (
         <>
             <div class={style.message_board}>

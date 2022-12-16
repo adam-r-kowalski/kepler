@@ -15,7 +15,6 @@ export class Kepler {
         this.callbacks = []
         this.backend = backend
         this.backend.onreceive((text) => {
-            console.log(text)
             respond(text)
         })
     }
@@ -26,6 +25,7 @@ export class Kepler {
             callback(last_response())
         })
     }
+
     onreceive(callback: OnMessage) {
         this.callbacks.push(callback)
     }

@@ -1,0 +1,15 @@
+{
+  "name": "kepler",
+  "version": "1.0.0",
+  "description": "Kepler voice AI assistant",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "sockjs": "^0.3.24",
+    "ws": "^8.11.0"
+  }
+}

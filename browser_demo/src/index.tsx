@@ -2,10 +2,8 @@
 import { render } from "solid-js/web"
 
 import { MessageBoard } from "./MessageBoard"
-import { Kepler } from "./Kepler"
-import { MockLanguageModel } from "./LanguageModel"
 
 render(
-    () => <MessageBoard kepler={new Kepler(new MockLanguageModel())} />,
+    () => <MessageBoard kepler_ws = "wss://localhost:8080" />,
     document.getElementById("root") as HTMLElement
 )
