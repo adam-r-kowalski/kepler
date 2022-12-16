@@ -46,7 +46,6 @@ jobs:
 
       - name: Install and Build 🔧
         run: |
-          cd frontend
           pnpm install
           pnpm run build
 
