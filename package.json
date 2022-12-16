@@ -19,6 +19,7 @@
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
     "@solidjs/router": "^0.5.1",
+    "idb": "^7.1.1",
     "solid-icons": "^1.0.4",
     "solid-js": "^1.5.1"
   }
