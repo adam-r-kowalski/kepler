@@ -1,6 +1,11 @@
-export type OnMessage = (text: string) => void
+import { createContext, useContext } from "solid-js"
+import { Key } from "./key"
 
 export interface Backend {
-    send: (text: string) => void
-    onreceive: (callback: OnMessage) => void
+    key: Key
+    send: (text: string) => Promise<string>
 }
+
+export const BackendContext = createContext<Backend>()
+
+export const useBackend = () => useContext(BackendContext)
