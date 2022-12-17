@@ -1,3 +1,11 @@
+.conversation {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px;
+    height: var(--height);
+}
+
 .messages {
     display: flex;
     flex-direction: column;

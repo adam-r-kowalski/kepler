@@ -1,12 +1,12 @@
 import { Toolbar } from "../Toolbar"
 import { Route, Router, Routes } from "@solidjs/router"
 import { Profile } from "../Profile"
-import { Thread } from "../Thread"
+import { Conversation } from "../Conversation"
 import { ProfileProvider } from "../Profile"
 import { ChatGPTBackendProvider, MockBackendProvider } from "../Backend"
 
-const BackendProvider = ChatGPTBackendProvider
-// const BackendProvider = MockBackendProvider
+// const BackendProvider = ChatGPTBackendProvider
+const BackendProvider = MockBackendProvider
 
 export const Kepler = () => {
     return (
@@ -15,7 +15,7 @@ export const Kepler = () => {
                 <BackendProvider>
                     <Toolbar />
                     <Routes>
-                        <Route path="/kepler/" component={Thread} />
+                        <Route path="/kepler/" component={Conversation} />
                         <Route path="/kepler/profile/" component={Profile} />
                     </Routes>
                 </BackendProvider>
