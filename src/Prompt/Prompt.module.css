@@ -9,7 +9,7 @@
     align-self: flex-end;
     gap: 5px;
     width: calc(100% - env(safe-area-inset-left) - env(safe-area-inset-right));
-    max-width: 1000px;
+    max-width: var(--max-width);
     margin: 0 auto;
 }
 
