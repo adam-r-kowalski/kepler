@@ -1,5 +1,5 @@
 import { FaSolidCircleUser } from "solid-icons/fa"
-import { Router, useNavigate } from "@solidjs/router"
+import { useNavigate } from "@solidjs/router"
 
 import style from "./Toolbar.module.css"
 
@@ -8,8 +8,8 @@ export const Toolbar = () => {
     return (
         <div class={style.toolbar}>
             <div class={style.content}>
-                <div class={style.kepler} onclick={() => navigate("/kepler/")}>
-                    Kepler
+                <div class={style.title} onclick={() => navigate("/kepler/")}>
+                    Conversations
                 </div>
                 <FaSolidCircleUser
                     class={style.icon}
