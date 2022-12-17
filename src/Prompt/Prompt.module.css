@@ -2,15 +2,15 @@
     background-color: #bfbfbf;
     color: white;
     padding: 5px 10px;
-    border-radius: 10px 10px 0px 10px;
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: flex-end;
     align-self: flex-end;
     gap: 5px;
-    width: 100%;
+    width: calc(100% - env(safe-area-inset-left) - env(safe-area-inset-right));
     max-width: 1000px;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
 .text {
