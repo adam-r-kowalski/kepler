@@ -1,13 +1,14 @@
 import { For } from "solid-js"
+import { Toolbar } from "../Toolbar"
 import style from "./Profile.module.css"
 import { engines, useProfile } from "./ProfileContext"
 
 export const Profile = () => {
     const profile = useProfile()!
     return (
-        <div class={style.profile}>
-            <h1>Profile</h1>
-            <div class={style.open_ai}>
+        <>
+            <Toolbar title="Profile" />
+            <div class={style.profile}>
                 <h2>Open AI</h2>
                 <strong>Secret Key</strong>
                 <input
@@ -45,6 +46,6 @@ export const Profile = () => {
                     }
                 />
             </div>
-        </div>
+        </>
     )
 }

@@ -7,6 +7,7 @@ import { Prompt } from "../Prompt"
 import { Sent } from "../Sent"
 import { useBackend } from "../Backend/Backend"
 import { RateLimit } from "../RateLimit"
+import { Toolbar } from "../Toolbar"
 
 interface Message {
     kind: "sent" | "received" | "rate limit"
@@ -40,31 +41,40 @@ export const Conversation = () => {
         }
     }
     return (
-        <div class={style.conversation}>
-            <div class={style.scrollable} ref={ref}>
-                <div class={style.messages}>
-                    <div style={{ height: "100px" }} />
-                    <For each={messages}>
-                        {(message) => {
-                            return (
-                                <Switch>
-                                    <Match when={message.kind === "sent"}>
-                                        <Sent>{message.text}</Sent>
-                                    </Match>
-                                    <Match when={message.kind === "rate limit"}>
-                                        <RateLimit>{message.text}</RateLimit>
-                                    </Match>
-                                    <Match when={message.kind === "received"}>
-                                        <Received>{message.text}</Received>
-                                    </Match>
-                                </Switch>
-                            )
-                        }}
-                    </For>
+        <>
+            <Toolbar title="Untitled Conversation" />
+            <div class={style.conversation}>
+                <div class={style.scrollable} ref={ref}>
+                    <div class={style.messages}>
+                        <div style={{ height: "100px" }} />
+                        <For each={messages}>
+                            {(message) => {
+                                return (
+                                    <Switch>
+                                        <Match when={message.kind === "sent"}>
+                                            <Sent>{message.text}</Sent>
+                                        </Match>
+                                        <Match
+                                            when={message.kind === "rate limit"}
+                                        >
+                                            <RateLimit>
+                                                {message.text}
+                                            </RateLimit>
+                                        </Match>
+                                        <Match
+                                            when={message.kind === "received"}
+                                        >
+                                            <Received>{message.text}</Received>
+                                        </Match>
+                                    </Switch>
+                                )
+                            }}
+                        </For>
+                    </div>
                 </div>
+                <div style={{ height: "20px", "min-height": "20px" }} />
+                <Prompt onSend={send} />
             </div>
-            <div style={{ height: "20px", "min-height": "20px" }} />
-            <Prompt onSend={send} />
-        </div>
+        </>
     )
 }

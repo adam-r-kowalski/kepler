@@ -6,15 +6,14 @@ import { Conversations } from "../Conversations"
 import { ProfileProvider } from "../Profile"
 import { ChatGPTBackendProvider, MockBackendProvider } from "../Backend"
 
-// const BackendProvider = ChatGPTBackendProvider
-const BackendProvider = MockBackendProvider
+const BackendProvider = ChatGPTBackendProvider
+// const BackendProvider = MockBackendProvider
 
 export const Kepler = () => {
     return (
         <Router>
             <ProfileProvider>
                 <BackendProvider>
-                    <Toolbar />
                     <Routes>
                         <Route path="/kepler/" component={Conversations} />
                         <Route

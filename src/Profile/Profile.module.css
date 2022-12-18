@@ -2,9 +2,6 @@
     margin: calc(var(--toolbar) + 30px) auto 0 auto;
     width: 100%;
     max-width: var(--max-width);
-}
-
-.open_ai {
     display: flex;
     flex-direction: column;
     font-size: 18px;
