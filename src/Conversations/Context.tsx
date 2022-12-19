@@ -26,18 +26,7 @@ interface Props {
 
 export const ConversationsProvider = (props: Props) => {
     const backend = useBackend()!
-    const [store, setStore] = createStore<Store>({
-        Weather: [
-            {
-                kind: "sent",
-                text: "What is the weather today",
-            },
-            {
-                kind: "received",
-                text: "today will be warm and sunny",
-            },
-        ],
-    })
+    const [store, setStore] = createStore<Store>({})
     const send = async (conversation: string, text: string) => {
         const index = store[conversation].length
         setStore(
