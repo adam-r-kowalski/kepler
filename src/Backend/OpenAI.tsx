@@ -3,30 +3,13 @@ import { useProfile } from "../Profile"
 
 import { Backend } from "./Backend"
 
-const modelAndTokens = (model: string) => {
-    switch (model) {
-        case "ada":
-            return ["text-ada-001", 2000]
-        case "babbage":
-            return ["text-babbage-001", 2000]
-        case "curie":
-            return ["text-curie-001", 2000]
-        case "davinci":
-            return ["text-davinci-003", 4000]
-        case "codex":
-            return ["code-davinci-002", 8000]
-        default:
-            return ["text-ada-001", 2000]
-    }
-}
-
 const prompt = (text: string, summary: string): string => {
     return `
     Respond to each question only with JSON that looks like this:
 
     {
         "answer": "the answer to the question formatted as markdown",
-        "summary": "a summary of the conversation",
+        "summary": "a brief summary of the conversation",
     }
 
     Current Summary: ${summary}
@@ -41,15 +24,14 @@ export const createOpenAIBackend = (): Backend => {
     const authorization = () => `Bearer ${profile.key()}`
     return {
         send: async (text: string, summary: string): Promise<Message> => {
-            const [model, max_tokens] = modelAndTokens(profile.model())
             const headers = {
                 "Content-Type": "application/json",
                 Authorization: authorization(),
             }
             const body = {
-                model,
+                model: "text-davinci-003",
                 prompt: prompt(text, summary),
-                max_tokens,
+                max_tokens: 2000,
                 temperature: 0.0,
             }
             console.log(body)

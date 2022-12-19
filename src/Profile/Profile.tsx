@@ -1,9 +1,7 @@
-import { For } from "solid-js"
-
 import { ProfileIcon } from "../Prompt"
 import { Toolbar } from "../Toolbar"
 import style from "./Profile.module.css"
-import { engines, useProfile } from "./ProfileContext"
+import { useProfile } from "./ProfileContext"
 import { Back } from "../Conversation/Back"
 
 export const Profile = () => {
@@ -24,32 +22,6 @@ export const Profile = () => {
                     value={profile.key()}
                     onchange={(e) =>
                         profile.setKey((e.target as HTMLInputElement).value)
-                    }
-                />
-                <strong>Model</strong>
-                <select
-                    class={style.model}
-                    value={profile.model()}
-                    onchange={(e) =>
-                        profile.setModel((e.target as HTMLSelectElement).value)
-                    }
-                >
-                    <For each={engines}>
-                        {(engine) => <option value={engine}>{engine}</option>}
-                    </For>
-                </select>
-                <strong>Temperature {profile.temperature()}</strong>
-                <input
-                    class={style.temperature}
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={profile.temperature()}
-                    oninput={(e) =>
-                        profile.setTemperature(
-                            (e.target as HTMLInputElement).valueAsNumber
-                        )
                     }
                 />
             </div>
