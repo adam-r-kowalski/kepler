@@ -24,19 +24,3 @@ strong {
     border-radius: 5px;
     max-width: 700px;
 }
-
-.model {
-    margin-top: 10px;
-    font-size: 18px;
-    padding: 4px;
-    border-radius: 5px;
-    max-width: 200px;
-}
-
-.temperature {
-    margin-top: 10px;
-    font-size: 18px;
-    padding: 4px;
-    border-radius: 5px;
-    max-width: 200px;
-}

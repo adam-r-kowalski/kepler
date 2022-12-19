@@ -1,0 +1,13 @@
+.error {
+    background-color: #ff1e90;
+    color: white;
+    width: fit-content;
+    max-width: 90%;
+    padding: 10px 20px;
+    border-radius: 10px 10px 10px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    white-space: pre-wrap;
+}

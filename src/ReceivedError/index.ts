@@ -1,0 +1,1 @@
+export { ReceivedError } from "./ReceivedError"

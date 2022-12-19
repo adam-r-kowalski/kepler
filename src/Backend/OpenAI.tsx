@@ -1,56 +1,58 @@
+import { Message } from "../Conversations/Context"
 import { useProfile } from "../Profile"
 
-import { Backend, Response } from "./Backend"
+import { Backend } from "./Backend"
+
+const prompt = (text: string, summary: string): string => {
+    return `
+    Respond to each question only with JSON that looks like this:
+
+    {
+        "answer": "the answer to the question formatted as markdown",
+        "summary": "a brief summary of the conversation",
+    }
+
+    Current Summary: ${summary}
+
+    Question: ${text}
+
+    Answer:`.trim()
+}
 
 export const createOpenAIBackend = (): Backend => {
     const profile = useProfile()!
     const authorization = () => `Bearer ${profile.key()}`
-    const modelAndTokens = () => {
-        switch (profile.model()) {
-            case "ada":
-                return ["text-ada-001", 2000]
-            case "babbage":
-                return ["text-babbage-001", 2000]
-            case "curie":
-                return ["text-curie-001", 2000]
-            case "davinci":
-                return ["text-davinci-003", 4000]
-            case "codex":
-                return ["code-davinci-002", 8000]
-            default:
-                return ["text-ada-001", 2000]
-        }
-    }
     return {
-        send: async (text: string): Promise<Response> => {
-            const [model, max_tokens] = modelAndTokens()
+        send: async (text: string, summary: string): Promise<Message> => {
             const headers = {
                 "Content-Type": "application/json",
                 Authorization: authorization(),
             }
-            const body = JSON.stringify({
-                model,
-                prompt: text,
-                max_tokens,
+            const body = {
+                model: "text-davinci-003",
+                prompt: prompt(text, summary),
+                max_tokens: 2000,
                 temperature: 0.0,
-            })
+            }
+            console.log(body)
             const result = await fetch(
                 "https://api.openai.com/v1/completions",
                 {
                     method: "POST",
                     headers,
-                    body,
+                    body: JSON.stringify(body),
                 }
             )
             console.log(result)
             const data = await result.json()
             console.log(data)
             if ("error" in data) {
-                return { kind: "rate limit" }
+                return { kind: "rate limit", text }
             }
             return {
-                kind: "success",
+                kind: "received",
                 text: (data.choices[0].text as string).trim(),
+                summary: "",
             }
         },
     }
