@@ -33,7 +33,7 @@ const prompt = (text: string, summary: string): string => {
 
     Question: ${text}
 
-    Answer:`
+    Answer:`.trim()
 }
 
 export const createOpenAIBackend = (): Backend => {
