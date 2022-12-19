@@ -1,8 +1,18 @@
 import { createContext, JSXElement, useContext } from "solid-js"
-import { Message } from "../Conversations/Context"
+
+interface Success {
+    kind: "success"
+    text: string
+}
+
+interface RateLimit {
+    kind: "rate limit"
+}
+
+export type Response = Success | RateLimit
 
 export interface Backend {
-    send: (text: string, summary: string) => Promise<Message>
+    send: (prompt: string) => Promise<Response>
 }
 
 export const BackendContext = createContext<Backend>()
