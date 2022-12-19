@@ -5,19 +5,18 @@ import { Toolbar } from "../Toolbar"
 import { useConversations } from "./Context"
 import { New } from "./New"
 import { Preview } from "./Preview"
+import { ProfileIcon } from "../Prompt"
 
 export const Conversations = () => {
     const conversations = useConversations()!
     return (
         <>
-            <Toolbar title="Conversations" />
+            <Toolbar content="Conversations" right={<ProfileIcon />} />
             <div class={style.conversations}>
                 <New />
-                <For each={Object.entries(conversations.store)}>
-                    {([name, conversation]) => {
-                        return (
-                            <Preview name={name} conversation={conversation} />
-                        )
+                <For each={Object.values(conversations.store)}>
+                    {(conversation) => {
+                        return <Preview conversation={conversation} />
                     }}
                 </For>
             </div>

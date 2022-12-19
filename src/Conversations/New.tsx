@@ -8,8 +8,8 @@ export const New = () => {
     const navigate = useNavigate()
     const conversations = useConversations()!
     const onclick = () => {
-        const name = conversations.create()
-        navigate(`/kepler/conversation/${name}`)
+        const uuid = conversations.create()
+        navigate(`/kepler/conversation/${uuid}`)
     }
     return (
         <div

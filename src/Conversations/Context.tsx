@@ -1,21 +1,28 @@
 import { createContext, JSXElement, useContext } from "solid-js"
 import { createStore, produce } from "solid-js/store"
 import { useBackend } from "../Backend/Backend"
+import { useUUID } from "../UUID"
 
 export interface Message {
     kind: "sent" | "received" | "rate limit"
     text: string
 }
 
-export type Conversation = Message[]
+export interface Conversation {
+    uuid: string
+    name: string
+    messages: Message[]
+    summary: string
+}
 
-type Store = { [name: string]: Conversation }
+type Store = { [uuid: string]: Conversation }
 
 interface Conversations {
     store: Store
     send: (conversation: string, text: string) => Promise<void>
     create: () => string
     remove: (conversation: string) => void
+    rename: (conversation: string, name: string) => void
 }
 
 const ConversationsContext = createContext<Conversations>()
@@ -25,22 +32,25 @@ interface Props {
 }
 
 export const ConversationsProvider = (props: Props) => {
+    const uuid = useUUID()!
     const backend = useBackend()!
     const [store, setStore] = createStore<Store>({})
-    const send = async (conversation: string, text: string) => {
-        const index = store[conversation].length
+    const send = async (uuid: string, text: string) => {
+        const index = store[uuid].messages.length
         setStore(
-            conversation,
+            uuid,
+            "messages",
             produce((messages) => messages.push({ kind: "sent", text }))
         )
         const received = await backend.send(text)
         switch (received.kind) {
             case "rate limit":
-                setStore(conversation, index, "kind", "rate limit")
+                setStore(uuid, "messages", index, "kind", "rate limit")
                 break
             case "success":
                 setStore(
-                    conversation,
+                    uuid,
+                    "messages",
                     produce((messages) =>
                         messages.push({ kind: "received", text: received.text })
                     )
@@ -49,27 +59,27 @@ export const ConversationsProvider = (props: Props) => {
         }
     }
     const create = () => {
-        let name = "Untitled Conversation"
-        if (name in store) {
-            for (let i = 1; true; i++) {
-                const newName = `${name} ${i}`
-                if (!(newName in store)) {
-                    name = newName
-                    break
-                }
-            }
+        const conversation: Conversation = {
+            uuid: uuid.generate(),
+            name: "Untitled Conversation",
+            messages: [],
+            summary: "",
         }
-        setStore(name, [])
-        return name
+        setStore(conversation.uuid, conversation)
+        return conversation.uuid
     }
     const remove = (conversation: string) => {
         setStore(produce((store) => delete store[conversation]))
+    }
+    const rename = (conversation: string, name: string) => {
+        setStore(conversation, "name", name)
     }
     const conversations: Conversations = {
         store,
         send,
         create,
         remove,
+        rename,
     }
     return (
         <ConversationsContext.Provider value={conversations}>

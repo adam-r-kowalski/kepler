@@ -1,13 +1,20 @@
 import { For } from "solid-js"
+
+import { ProfileIcon } from "../Prompt"
 import { Toolbar } from "../Toolbar"
 import style from "./Profile.module.css"
 import { engines, useProfile } from "./ProfileContext"
+import { Back } from "../Conversation/Back"
 
 export const Profile = () => {
     const profile = useProfile()!
     return (
         <>
-            <Toolbar title="Profile" />
+            <Toolbar
+                content="Profile"
+                left={<Back />}
+                right={<ProfileIcon />}
+            />
             <div class={style.profile}>
                 <h2>Open AI</h2>
                 <strong>Secret Key</strong>
