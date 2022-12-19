@@ -7,7 +7,7 @@ export const Profile = () => {
     const profile = useProfile()!
     return (
         <>
-            <Toolbar title="Profile" />
+            <Toolbar content="Profile" />
             <div class={style.profile}>
                 <h2>Open AI</h2>
                 <strong>Secret Key</strong>

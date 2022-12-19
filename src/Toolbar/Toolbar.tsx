@@ -3,7 +3,7 @@ import { JSXElement } from "solid-js"
 import style from "./Toolbar.module.css"
 
 interface Props {
-    title: string
+    content: JSXElement
     left?: JSXElement
 }
 
@@ -12,7 +12,7 @@ export const Toolbar = (props: Props) => {
         <div class={style.toolbar}>
             <div class={style.content}>
                 {props.left}
-                <div>{props.title}</div>
+                <div>{props.content}</div>
             </div>
         </div>
     )

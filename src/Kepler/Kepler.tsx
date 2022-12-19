@@ -6,8 +6,8 @@ import { ProfileProvider } from "../Profile"
 import { ChatGPTBackendProvider, MockBackendProvider } from "../Backend"
 import { ConversationsProvider } from "../Conversations"
 
-const BackendProvider = ChatGPTBackendProvider
-// const BackendProvider = MockBackendProvider
+// const BackendProvider = ChatGPTBackendProvider
+const BackendProvider = MockBackendProvider
 
 export const Kepler = () => {
     return (

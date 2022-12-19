@@ -10,7 +10,7 @@ export const Conversations = () => {
     const conversations = useConversations()!
     return (
         <>
-            <Toolbar title="Conversations" />
+            <Toolbar content="Conversations" />
             <div class={style.conversations}>
                 <New />
                 <For each={Object.entries(conversations.store)}>
