@@ -2,7 +2,6 @@ import { Match, Switch } from "solid-js"
 
 import { Message } from "../Conversations/Context"
 import { Received } from "../Received"
-import { ReceivedError } from "../ReceivedError"
 import { Sent } from "../Sent"
 import { RateLimit } from "../RateLimit"
 
@@ -21,9 +20,6 @@ export const MessageBubble = (props: Props) => {
             </Match>
             <Match when={props.message.kind === "received"}>
                 <Received>{props.message.text}</Received>
-            </Match>
-            <Match when={props.message.kind === "received error"}>
-                <ReceivedError>{props.message.text}</ReceivedError>
             </Match>
         </Switch>
     )

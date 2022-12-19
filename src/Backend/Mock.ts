@@ -1,14 +1,12 @@
 import { faker } from "@faker-js/faker"
-import { Message } from "../Conversations/Context"
 
-import { Backend } from "./Backend"
+import { Backend, Response } from "./Backend"
 
 export const createMockBackend = (): Backend => ({
-    send: async (text: string, summary: string): Promise<Message> => {
+    send: async (prompt: string): Promise<Response> => {
         return {
-            kind: "received",
+            kind: "success",
             text: faker.lorem.sentence(),
-            summary: faker.lorem.sentence(),
         }
     },
 })

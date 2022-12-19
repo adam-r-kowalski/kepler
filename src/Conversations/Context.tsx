@@ -3,43 +3,15 @@ import { createStore, produce } from "solid-js/store"
 import { useBackend } from "../Backend/Backend"
 import { useUUID } from "../UUID"
 
-interface Sent {
-    kind: "sent"
+export interface Message {
+    kind: "sent" | "rate limit" | "received"
     text: string
 }
-
-interface RateLimit {
-    kind: "rate limit"
-    text: string
-}
-
-interface Received {
-    kind: "received"
-    text: string
-    summary: string
-}
-
-interface ReceivedError {
-    kind: "received error"
-    text: string
-    summary: string
-}
-
-export type Message = Sent | RateLimit | Received | ReceivedError
 
 export interface Conversation {
     uuid: string
     name: string
     messages: Message[]
-}
-
-const summary = (messages: Message[]): string => {
-    const message = messages
-        .slice()
-        .reverse()
-        .find((m) => m.kind === "received")
-    if (message && message.kind === "received") return message.summary
-    return "No summary yet."
 }
 
 type Store = { [uuid: string]: Conversation }
@@ -58,6 +30,26 @@ interface Props {
     children: JSXElement
 }
 
+export const prompt = (messages: Message[]): string => {
+    return `
+You are a highly intelligent, creative and helpful AI.
+Respond to the user with an answer formatted as markdown.
+
+${messages
+    .map((m) => {
+        switch (m.kind) {
+            case "sent":
+            case "rate limit":
+                return `User: ${m.text}`
+            case "received":
+                return `AI: ${m.text}`
+        }
+    })
+    .join("\n\n")}
+
+AI:`.trim()
+}
+
 export const ConversationsProvider = (props: Props) => {
     const uuid = useUUID()!
     const backend = useBackend()!
@@ -69,39 +61,23 @@ export const ConversationsProvider = (props: Props) => {
             "messages",
             produce((messages) => messages.push({ kind: "sent", text }))
         )
-        const currentSummary = summary(store[uuid].messages)
-        const received = await backend.send(text, currentSummary)
+        const received = await backend.send(prompt(store[uuid].messages))
         switch (received.kind) {
             case "rate limit":
                 setStore(uuid, "messages", index, "kind", "rate limit")
                 break
-            case "received":
-                try {
-                    const { answer, summary } = JSON.parse(received.text)
-                    setStore(
-                        uuid,
-                        "messages",
-                        produce((messages) =>
-                            messages.push({
-                                kind: "received",
-                                text: answer,
-                                summary,
-                            })
-                        )
+            case "success":
+                const text = received.text
+                setStore(
+                    uuid,
+                    "messages",
+                    produce((messages) =>
+                        messages.push({
+                            kind: "received",
+                            text,
+                        })
                     )
-                } catch (e) {
-                    setStore(
-                        uuid,
-                        "messages",
-                        produce((messages) =>
-                            messages.push({
-                                kind: "received error",
-                                text: received.text,
-                                summary: currentSummary,
-                            })
-                        )
-                    )
-                }
+                )
                 break
         }
     }

@@ -1,36 +1,19 @@
-import { Message } from "../Conversations/Context"
 import { useProfile } from "../Profile"
 
-import { Backend } from "./Backend"
-
-const prompt = (text: string, summary: string): string => {
-    return `
-    Respond to each question only with JSON that looks like this:
-
-    {
-        "answer": "the answer to the question formatted as markdown",
-        "summary": "a brief summary of the conversation",
-    }
-
-    Current Summary: ${summary}
-
-    Question: ${text}
-
-    Answer:`.trim()
-}
+import { Backend, Response } from "./Backend"
 
 export const createOpenAIBackend = (): Backend => {
     const profile = useProfile()!
     const authorization = () => `Bearer ${profile.key()}`
     return {
-        send: async (text: string, summary: string): Promise<Message> => {
+        send: async (prompt: string): Promise<Response> => {
             const headers = {
                 "Content-Type": "application/json",
                 Authorization: authorization(),
             }
             const body = {
                 model: "text-davinci-003",
-                prompt: prompt(text, summary),
+                prompt,
                 max_tokens: 2000,
                 temperature: 0.0,
             }
@@ -47,12 +30,11 @@ export const createOpenAIBackend = (): Backend => {
             const data = await result.json()
             console.log(data)
             if ("error" in data) {
-                return { kind: "rate limit", text }
+                return { kind: "rate limit" }
             }
             return {
-                kind: "received",
+                kind: "success",
                 text: (data.choices[0].text as string).trim(),
-                summary: "",
             }
         },
     }
