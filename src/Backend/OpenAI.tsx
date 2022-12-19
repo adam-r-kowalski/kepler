@@ -1,14 +1,8 @@
-import { JSXElement } from "solid-js"
-
 import { useProfile } from "../Profile"
 
-import { Backend, BackendContext, Response } from "./Backend"
+import { Backend, Response } from "./Backend"
 
-interface Props {
-    children: JSXElement
-}
-
-export const ChatGPTBackendProvider = (props: Props) => {
+export const createOpenAIBackend = (): Backend => {
     const profile = useProfile()!
     const authorization = () => `Bearer ${profile.key()}`
     const modelAndTokens = () => {
@@ -27,7 +21,7 @@ export const ChatGPTBackendProvider = (props: Props) => {
                 return ["text-ada-001", 2000]
         }
     }
-    const backend: Backend = {
+    return {
         send: async (text: string): Promise<Response> => {
             const [model, max_tokens] = modelAndTokens()
             const headers = {
@@ -60,9 +54,4 @@ export const ChatGPTBackendProvider = (props: Props) => {
             }
         },
     }
-    return (
-        <BackendContext.Provider value={backend}>
-            {props.children}
-        </BackendContext.Provider>
-    )
 }

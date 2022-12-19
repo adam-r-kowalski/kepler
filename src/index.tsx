@@ -2,21 +2,10 @@
 import { render } from "solid-js/web"
 
 import { Kepler } from "./Kepler"
-import { ChatGPTBackendProvider, MockBackendProvider } from "./Backend"
-import { CryptoUUIDProvider } from "./UUID"
-
-const BackendProvider = ChatGPTBackendProvider
-// const BackendProvider = MockBackendProvider
-
-const UUIDProvider = CryptoUUIDProvider
+import { createMockBackend, createOpenAIBackend } from "./Backend"
+import { createCryptoUUID } from "./UUID"
 
 render(
-    () => (
-        <UUIDProvider>
-            <BackendProvider>
-                <Kepler />
-            </BackendProvider>
-        </UUIDProvider>
-    ),
+    () => <Kepler backend={createOpenAIBackend} uuid={createCryptoUUID} />,
     document.getElementById("root")!
 )
