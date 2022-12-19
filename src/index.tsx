@@ -2,20 +2,21 @@
 import { render } from "solid-js/web"
 
 import { Kepler } from "./Kepler"
+import { ChatGPTBackendProvider, MockBackendProvider } from "./Backend"
+import { CryptoUUIDProvider } from "./UUID"
 
-document.documentElement.style.setProperty("--toolbar", "50px")
-document.documentElement.style.setProperty("--max-width", "1000px")
+// const BackendProvider = ChatGPTBackendProvider
+const BackendProvider = MockBackendProvider
 
-document.documentElement.style.setProperty(
-    "--height",
-    `${window.innerHeight}px`
+const UUIDProvider = CryptoUUIDProvider
+
+render(
+    () => (
+        <UUIDProvider>
+            <BackendProvider>
+                <Kepler />
+            </BackendProvider>
+        </UUIDProvider>
+    ),
+    document.getElementById("root")!
 )
-
-window.addEventListener("resize", () => {
-    document.documentElement.style.setProperty(
-        "--height",
-        `${window.innerHeight}px`
-    )
-})
-
-render(() => <Kepler />, document.getElementById("root")!)

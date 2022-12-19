@@ -6,13 +6,12 @@ import style from "./Conversations.module.css"
 import { Conversation, useConversations } from "./Context"
 
 interface Props {
-    name: string
     conversation: Conversation
 }
 
 export const Preview = (props: Props) => {
     const preview = () => {
-        const message = props.conversation
+        const message = props.conversation.messages
             .slice()
             .reverse()
             .find((m) => m.kind !== "received")
@@ -20,17 +19,18 @@ export const Preview = (props: Props) => {
         return "No messages yet..."
     }
     const navigate = useNavigate()
-    const navigateTo = () => navigate(`/kepler/conversation/${props.name}`)
+    const navigateTo = () =>
+        navigate(`/kepler/conversation/${props.conversation.uuid}`)
     const conversations = useConversations()!
     const remove = (e: Event) => {
-        conversations.remove(props.name)
+        conversations.remove(props.conversation.uuid)
         e.stopPropagation()
     }
     return (
         <div class={style.conversation} onclick={navigateTo}>
             <FaSolidMessage />
             <div class={style.content}>
-                <strong>{props.name}</strong>
+                <strong>{props.conversation.name}</strong>
                 <p>{preview()}</p>
             </div>
             <div class={style.delete} onclick={remove}>

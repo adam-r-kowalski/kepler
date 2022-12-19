@@ -1,8 +1,11 @@
+import { Conversation, useConversations } from "../Conversations/Context"
+
 interface Props {
-    name: string
+    conversation: Conversation
 }
 
 export const Title = (props: Props) => {
+    const conversations = useConversations()!
     let ref: HTMLDivElement | undefined = undefined
     const oninput = (e: InputEvent) => {
         if (e.inputType === "insertParagraph") {
@@ -11,12 +14,12 @@ export const Title = (props: Props) => {
         }
     }
     const onblur = () => {
-        if (ref!.innerText === props.name) return
-        console.log(ref!.innerText)
+        if (ref!.innerText === props.conversation.name) return
+        conversations.rename(props.conversation.uuid, ref!.innerText)
     }
     return (
         <div contenteditable oninput={oninput} onblur={onblur} ref={ref}>
-            {props.name}
+            {props.conversation.name}
         </div>
     )
 }

@@ -13,11 +13,9 @@ export const Conversations = () => {
             <Toolbar content="Conversations" />
             <div class={style.conversations}>
                 <New />
-                <For each={Object.entries(conversations.store)}>
-                    {([name, conversation]) => {
-                        return (
-                            <Preview name={name} conversation={conversation} />
-                        )
+                <For each={Object.values(conversations.store)}>
+                    {(conversation) => {
+                        return <Preview conversation={conversation} />
                     }}
                 </For>
             </div>

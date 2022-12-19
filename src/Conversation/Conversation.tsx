@@ -14,20 +14,24 @@ export const Conversation = () => {
     const conversations = useConversations()!
     let ref: HTMLElement | undefined = undefined
     const onSend = (text: string) => {
-        conversations.send(params.name, text)
+        conversations.send(params.uuid, text)
         setTimeout(() => {
             if (!ref) return
             ref.scrollBy({ top: ref.scrollHeight, behavior: "smooth" })
         }, 100)
     }
+    const conversation = conversations.store[params.uuid]
     return (
         <>
-            <Toolbar content={<Title name={params.name} />} left={<Back />} />
+            <Toolbar
+                content={<Title conversation={conversation} />}
+                left={<Back />}
+            />
             <div class={style.conversation}>
                 <div class={style.scrollable} ref={ref}>
                     <div class={style.messages}>
                         <div style={{ height: "100px" }} />
-                        <For each={conversations.store[params.name]}>
+                        <For each={conversation.messages}>
                             {(message) => <MessageBubble message={message} />}
                         </For>
                     </div>
