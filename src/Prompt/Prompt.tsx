@@ -1,5 +1,6 @@
 import { BsMicFill } from "solid-icons/bs"
 import { BsSendFill } from "solid-icons/bs"
+import { onMount } from "solid-js"
 
 import style from "./Prompt.module.css"
 import { createSpeechRecognizer } from "./speechRecognizer"
@@ -38,6 +39,7 @@ export const Prompt = (props: Props) => {
             }
         }
     }
+    onMount(() => textarea?.focus())
     return (
         <div class={style.prompt}>
             <div
@@ -54,6 +56,7 @@ export const Prompt = (props: Props) => {
                 rows={1}
                 onkeydown={onkeydown}
                 placeholder={"Message..."}
+                autofocus
             />
             <div class={style.icon}>
                 <BsSendFill onclick={onSend} />

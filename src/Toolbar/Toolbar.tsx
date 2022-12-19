@@ -1,20 +1,18 @@
-import { FaSolidCircleUser } from "solid-icons/fa"
-import { Router, useNavigate } from "@solidjs/router"
+import { JSXElement } from "solid-js"
 
 import style from "./Toolbar.module.css"
 
-export const Toolbar = () => {
-    const navigate = useNavigate()
+interface Props {
+    title: string
+    left?: JSXElement
+}
+
+export const Toolbar = (props: Props) => {
     return (
         <div class={style.toolbar}>
             <div class={style.content}>
-                <div class={style.kepler} onclick={() => navigate("/kepler/")}>
-                    Kepler
-                </div>
-                <FaSolidCircleUser
-                    class={style.icon}
-                    onclick={() => navigate("/kepler/profile")}
-                />
+                {props.left}
+                <div>{props.title}</div>
             </div>
         </div>
     )

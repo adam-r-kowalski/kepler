@@ -1,3 +1,3 @@
 export { type Backend } from "./Backend"
 export { MockBackendProvider } from "./Mock"
-export { ChatGPTBackendProvider } from "./ChatGPT"
+export { ChatGPTBackendProvider } from "./OpenAI"
