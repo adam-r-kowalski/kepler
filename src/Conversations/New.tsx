@@ -8,7 +8,7 @@ export const New = () => {
     const navigate = useNavigate()
     const conversations = useConversations()!
     const onclick = () => {
-        const name = conversations.new()
+        const name = conversations.create()
         navigate(`/kepler/conversation/${name}`)
     }
     return (

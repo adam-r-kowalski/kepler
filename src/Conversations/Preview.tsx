@@ -3,7 +3,7 @@ import { AiFillDelete } from "solid-icons/ai"
 import { FaSolidMessage } from "solid-icons/fa"
 
 import style from "./Conversations.module.css"
-import { Conversation } from "./Context"
+import { Conversation, useConversations } from "./Context"
 
 interface Props {
     name: string
@@ -16,15 +16,20 @@ export const Preview = (props: Props) => {
         return props.conversation[props.conversation.length - 1].text
     }
     const navigate = useNavigate()
-    const onclick = () => navigate(`/kepler/conversation/${props.name}`)
+    const navigateTo = () => navigate(`/kepler/conversation/${props.name}`)
+    const conversations = useConversations()!
+    const remove = (e: Event) => {
+        conversations.remove(props.name)
+        e.stopPropagation()
+    }
     return (
-        <div class={style.conversation} onclick={onclick}>
+        <div class={style.conversation} onclick={navigateTo}>
             <FaSolidMessage />
             <div class={style.content}>
                 <strong>{props.name}</strong>
                 <p>{preview()}</p>
             </div>
-            <div class={style.delete}>
+            <div class={style.delete} onclick={remove}>
                 <AiFillDelete />
             </div>
         </div>

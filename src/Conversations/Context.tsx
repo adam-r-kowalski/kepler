@@ -14,7 +14,8 @@ type Store = { [name: string]: Conversation }
 interface Conversations {
     store: Store
     send: (conversation: string, text: string) => Promise<void>
-    new: () => string
+    create: () => string
+    remove: (conversation: string) => void
 }
 
 const ConversationsContext = createContext<Conversations>()
@@ -58,7 +59,7 @@ export const ConversationsProvider = (props: Props) => {
                 break
         }
     }
-    const newConversation = () => {
+    const create = () => {
         let name = "Untitled Conversation"
         if (name in store) {
             for (let i = 1; true; i++) {
@@ -72,7 +73,15 @@ export const ConversationsProvider = (props: Props) => {
         setStore(name, [])
         return name
     }
-    const conversations: Conversations = { store, send, new: newConversation }
+    const remove = (conversation: string) => {
+        setStore(produce((store) => delete store[conversation]))
+    }
+    const conversations: Conversations = {
+        store,
+        send,
+        create,
+        remove,
+    }
     return (
         <ConversationsContext.Provider value={conversations}>
             {props.children}
