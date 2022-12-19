@@ -56,7 +56,6 @@ export const Prompt = (props: Props) => {
                 rows={1}
                 onkeydown={onkeydown}
                 placeholder={"Message..."}
-                autofocus
             />
             <div class={style.icon}>
                 <BsSendFill onclick={onSend} />
