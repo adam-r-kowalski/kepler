@@ -3,27 +3,21 @@ import { Route, Router, Routes } from "@solidjs/router"
 import { Profile } from "../Profile"
 import { Conversation } from "../Conversation"
 import { Conversations } from "../Conversations"
-import { ProfileProvider } from "../Profile"
-import { ConversationsProvider } from "../Conversations"
 import { UUID } from "../UUID"
 import { Backend } from "../Backend"
-import { UUIDProvider } from "../UUID/UUID"
-import { BackendProvider } from "../Backend/Backend"
+import { Providers } from "./Providers"
 
 document.documentElement.style.setProperty("--toolbar", "50px")
 document.documentElement.style.setProperty("--max-width", "1000px")
 
-document.documentElement.style.setProperty(
-    "--height",
-    `${window.innerHeight}px`
-)
+const setHeight = () => {
+    const height = `${window.innerHeight}px`
+    document.documentElement.style.setProperty("--height", height)
+}
 
-window.addEventListener("resize", () => {
-    document.documentElement.style.setProperty(
-        "--height",
-        `${window.innerHeight}px`
-    )
-})
+setHeight()
+
+window.addEventListener("resize", setHeight)
 
 interface Props {
     uuid: () => UUID
@@ -33,28 +27,16 @@ interface Props {
 export const Kepler = (props: Props) => {
     return (
         <Router>
-            <UUIDProvider uuid={props.uuid()}>
-                <ProfileProvider>
-                    <BackendProvider backend={props.backend()}>
-                        <ConversationsProvider>
-                            <Routes>
-                                <Route
-                                    path="/kepler/"
-                                    component={Conversations}
-                                />
-                                <Route
-                                    path="/kepler/conversation/:uuid"
-                                    component={Conversation}
-                                />
-                                <Route
-                                    path="/kepler/profile/"
-                                    component={Profile}
-                                />
-                            </Routes>
-                        </ConversationsProvider>
-                    </BackendProvider>
-                </ProfileProvider>
-            </UUIDProvider>
+            <Providers uuid={props.uuid} backend={props.backend}>
+                <Routes>
+                    <Route path="/kepler/" component={Conversations} />
+                    <Route
+                        path="/kepler/conversation/:uuid"
+                        component={Conversation}
+                    />
+                    <Route path="/kepler/profile/" component={Profile} />
+                </Routes>
+            </Providers>
         </Router>
     )
 }

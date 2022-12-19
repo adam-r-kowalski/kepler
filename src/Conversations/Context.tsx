@@ -3,16 +3,43 @@ import { createStore, produce } from "solid-js/store"
 import { useBackend } from "../Backend/Backend"
 import { useUUID } from "../UUID"
 
-export interface Message {
-    kind: "sent" | "received" | "rate limit"
+interface Sent {
+    kind: "sent"
     text: string
 }
+
+interface RateLimit {
+    kind: "rate limit"
+    text: string
+}
+
+interface Received {
+    kind: "received"
+    text: string
+    summary: string
+}
+
+interface ReceivedError {
+    kind: "received error"
+    text: string
+    summary: string
+}
+
+export type Message = Sent | RateLimit | Received | ReceivedError
 
 export interface Conversation {
     uuid: string
     name: string
     messages: Message[]
-    summary: string
+}
+
+const summary = (messages: Message[]): string => {
+    const message = messages
+        .slice()
+        .reverse()
+        .find((m) => m.kind === "received")
+    if (message && message.kind === "received") return message.summary
+    return "No summary yet."
 }
 
 type Store = { [uuid: string]: Conversation }
@@ -42,19 +69,39 @@ export const ConversationsProvider = (props: Props) => {
             "messages",
             produce((messages) => messages.push({ kind: "sent", text }))
         )
-        const received = await backend.send(text)
+        const currentSummary = summary(store[uuid].messages)
+        const received = await backend.send(text, currentSummary)
         switch (received.kind) {
             case "rate limit":
                 setStore(uuid, "messages", index, "kind", "rate limit")
                 break
-            case "success":
-                setStore(
-                    uuid,
-                    "messages",
-                    produce((messages) =>
-                        messages.push({ kind: "received", text: received.text })
+            case "received":
+                try {
+                    const { answer, summary } = JSON.parse(received.text)
+                    setStore(
+                        uuid,
+                        "messages",
+                        produce((messages) =>
+                            messages.push({
+                                kind: "received",
+                                text: answer,
+                                summary,
+                            })
+                        )
                     )
-                )
+                } catch (e) {
+                    setStore(
+                        uuid,
+                        "messages",
+                        produce((messages) =>
+                            messages.push({
+                                kind: "received error",
+                                text: received.text,
+                                summary: currentSummary,
+                            })
+                        )
+                    )
+                }
                 break
         }
     }
@@ -63,7 +110,6 @@ export const ConversationsProvider = (props: Props) => {
             uuid: uuid.generate(),
             name: "Untitled Conversation",
             messages: [],
-            summary: "",
         }
         setStore(conversation.uuid, conversation)
         return conversation.uuid
