@@ -13,7 +13,7 @@ type Store = { [name: string]: Conversation }
 
 interface Conversations {
     store: Store
-    send: (conversation: string, text: string) => void
+    send: (conversation: string, text: string) => Promise<void>
 }
 
 const ConversationsContext = createContext<Conversations>()
@@ -36,11 +36,12 @@ export const ConversationsProvider = (props: Props) => {
             },
         ],
     })
-    const sendToBackend = async (
-        conversation: string,
-        text: string,
-        index: number
-    ) => {
+    const send = async (conversation: string, text: string) => {
+        const index = store[conversation].length
+        setStore(
+            conversation,
+            produce((messages) => messages.push({ kind: "sent", text }))
+        )
         const received = await backend.send(text)
         switch (received.kind) {
             case "rate limit":
@@ -55,14 +56,6 @@ export const ConversationsProvider = (props: Props) => {
                 )
                 break
         }
-    }
-    const send = (conversation: string, text: string) => {
-        const index = store[conversation].length
-        setStore(
-            conversation,
-            produce((messages) => messages.push({ kind: "sent", text }))
-        )
-        sendToBackend(conversation, text, index)
     }
     const conversations: Conversations = { store, send }
     return (

@@ -46,8 +46,10 @@ export const Conversation = () => {
     let ref: HTMLElement | undefined = undefined
     const onSend = (text: string) => {
         conversations.send(params.name, text)
-        if (!ref) return
-        ref.scrollBy({ top: ref.scrollHeight, behavior: "smooth" })
+        setTimeout(() => {
+            if (!ref) return
+            ref.scrollBy({ top: ref.scrollHeight, behavior: "smooth" })
+        }, 100)
     }
     return (
         <>
