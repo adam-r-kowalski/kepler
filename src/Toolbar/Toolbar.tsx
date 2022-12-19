@@ -1,17 +1,17 @@
+import { JSXElement } from "solid-js"
+
 import style from "./Toolbar.module.css"
-import { AiOutlineMenu } from "solid-icons/ai"
 
 interface Props {
     title: string
+    left?: JSXElement
 }
 
 export const Toolbar = (props: Props) => {
     return (
         <div class={style.toolbar}>
             <div class={style.content}>
-                <div class={style.menu}>
-                    <AiOutlineMenu />
-                </div>
+                {props.left}
                 <div>{props.title}</div>
             </div>
         </div>

@@ -25,3 +25,8 @@
 .scrollable::-webkit-scrollbar {
     display: none;
 }
+
+.back {
+    display: flex;
+    cursor: pointer;
+}

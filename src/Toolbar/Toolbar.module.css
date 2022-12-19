@@ -20,8 +20,3 @@
     gap: 15px;
     padding: 0 5px;
 }
-
-.menu {
-    display: flex;
-    cursor: pointer;
-}
