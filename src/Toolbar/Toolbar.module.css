@@ -9,7 +9,7 @@
     -webkit-backdrop-filter: blur(4px);
 }
 
-.content {
+.elements {
     display: flex;
     align-items: center;
     font-size: 1.5rem;
@@ -19,4 +19,8 @@
     height: var(--toolbar);
     gap: 15px;
     padding: 0 5px;
+}
+
+.content {
+    flex: 1;
 }

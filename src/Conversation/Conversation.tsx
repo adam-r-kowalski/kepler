@@ -1,7 +1,7 @@
 import { For } from "solid-js"
 
 import style from "./Conversation.module.css"
-import { Prompt } from "../Prompt"
+import { ProfileIcon, Prompt } from "../Prompt"
 import { Toolbar } from "../Toolbar"
 import { useParams } from "@solidjs/router"
 import { useConversations } from "../Conversations/Context"
@@ -26,6 +26,7 @@ export const Conversation = () => {
             <Toolbar
                 content={<Title conversation={conversation} />}
                 left={<Back />}
+                right={<ProfileIcon />}
             />
             <div class={style.conversation}>
                 <div class={style.scrollable} ref={ref}>
