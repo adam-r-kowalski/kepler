@@ -2,7 +2,7 @@ import { For } from "solid-js"
 
 import style from "./Conversations.module.css"
 import { Toolbar } from "../Toolbar"
-import { useConversations } from "./Context"
+import { useConversations } from "./ConversationsContext"
 import { New } from "./New"
 import { Preview } from "./Preview"
 import { ProfileIcon } from "../Prompt"

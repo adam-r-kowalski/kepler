@@ -1,6 +1,9 @@
+import { AiOutlineConsoleSql } from "solid-icons/ai"
 import { createContext, JSXElement, useContext } from "solid-js"
 import { createStore, produce } from "solid-js/store"
+
 import { useBackend } from "../Backend/Backend"
+import { openDatabase } from "../Database"
 import { useUUID } from "../UUID"
 
 export interface Message {
@@ -54,13 +57,38 @@ export const ConversationsProvider = (props: Props) => {
     const uuid = useUUID()!
     const backend = useBackend()!
     const [store, setStore] = createStore<Store>({})
+    const loadDB = async () => {
+        const db = await openDatabase()
+        const conversations = await db.getAll("conversations")
+        setStore(
+            produce((store) => {
+                conversations.forEach((c) => (store[c.uuid] = c))
+                return store
+            })
+        )
+        console.log(store)
+        return db
+    }
+    const dbPromise = loadDB()
+    const saveMessages = async (conversation: string) => {
+        const db = await dbPromise
+        db.put(
+            "conversations",
+            JSON.parse(JSON.stringify(store[conversation])),
+            conversation
+        )
+    }
+
+    //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
     const send = async (uuid: string, text: string) => {
+        const db = await dbPromise
         const index = store[uuid].messages.length
         setStore(
             uuid,
             "messages",
             produce((messages) => messages.push({ kind: "sent", text }))
         )
+        await saveMessages(uuid)
         const received = await backend.send(prompt(store[uuid].messages))
         switch (received.kind) {
             case "rate limit":
@@ -80,6 +108,7 @@ export const ConversationsProvider = (props: Props) => {
                 )
                 break
         }
+        await saveMessages(uuid)
     }
     const create = () => {
         const conversation: Conversation = {
@@ -88,13 +117,18 @@ export const ConversationsProvider = (props: Props) => {
             messages: [],
         }
         setStore(conversation.uuid, conversation)
+        dbPromise.then((db) =>
+            db.put("conversations", conversation, conversation.uuid)
+        )
         return conversation.uuid
     }
     const remove = (conversation: string) => {
         setStore(produce((store) => delete store[conversation]))
+        dbPromise.then((db) => db.delete("conversations", conversation))
     }
     const rename = (conversation: string, name: string) => {
         setStore(conversation, "name", name)
+        saveMessages(conversation)
     }
     const conversations: Conversations = {
         store,

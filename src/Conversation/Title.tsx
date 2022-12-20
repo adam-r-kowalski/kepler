@@ -1,4 +1,7 @@
-import { Conversation, useConversations } from "../Conversations/Context"
+import {
+    Conversation,
+    useConversations,
+} from "../Conversations/ConversationsContext"
 
 interface Props {
     conversation: Conversation

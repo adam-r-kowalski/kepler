@@ -1,5 +1,5 @@
 import { test, expect } from "vitest"
-import { prompt } from "../src/Conversations/Context"
+import { prompt } from "../src/Conversations/ConversationsContext"
 
 test("prompt with one message", () => {
     const actual = prompt([

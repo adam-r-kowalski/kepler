@@ -1,6 +1,6 @@
 import { useNavigate } from "@solidjs/router"
 import { VsAdd } from "solid-icons/vs"
-import { useConversations } from "./Context"
+import { useConversations } from "./ConversationsContext"
 
 import style from "./Conversations.module.css"
 

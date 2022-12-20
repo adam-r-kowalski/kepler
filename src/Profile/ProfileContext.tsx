@@ -1,5 +1,6 @@
 import { openDB } from "idb"
 import { createContext, createSignal, JSXElement, useContext } from "solid-js"
+import { openDatabase } from "../Database"
 
 interface Profile {
     key: () => string
@@ -15,11 +16,7 @@ interface Props {
 export const ProfileProvider = (props: Props) => {
     const [key, baseSetKey] = createSignal("")
     const loadDB = async () => {
-        const db = await openDB("kepler", 1, {
-            upgrade(db) {
-                db.createObjectStore("profile")
-            },
-        })
+        const db = await openDatabase()
         const key = await db.get("profile", "key")
         if (key) baseSetKey(key)
         return db
