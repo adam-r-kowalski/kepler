@@ -1,6 +1,6 @@
 import { Match, Switch } from "solid-js"
 
-import { Message } from "../Conversations/Context"
+import { Message } from "../Conversations/ConversationsContext"
 import { Received } from "../Received"
 import { Sent } from "../Sent"
 import { RateLimit } from "../RateLimit"

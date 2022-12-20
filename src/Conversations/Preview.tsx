@@ -3,7 +3,7 @@ import { AiFillDelete } from "solid-icons/ai"
 import { FaSolidMessage } from "solid-icons/fa"
 
 import style from "./Conversations.module.css"
-import { Conversation, useConversations } from "./Context"
+import { Conversation, useConversations } from "./ConversationsContext"
 
 interface Props {
     conversation: Conversation

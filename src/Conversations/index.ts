@@ -1,2 +1,2 @@
 export { Conversations } from "./Conversations"
-export { ConversationsProvider } from "./Context"
+export { ConversationsProvider } from "./ConversationsContext"
