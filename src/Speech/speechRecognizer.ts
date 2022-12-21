@@ -65,7 +65,6 @@ export const createSpeechRecognizer = (onSend: OnSend): SpeechRecognizer => {
     }
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
-        console.log(event)
         const index = event.results.length - 1
         const result: SpeechRecognitionResult = event.results[index]
         if (result.isFinal) {

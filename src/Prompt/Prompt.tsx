@@ -3,7 +3,7 @@ import { BsSendFill } from "solid-icons/bs"
 import { onMount } from "solid-js"
 
 import style from "./Prompt.module.css"
-import { createSpeechRecognizer } from "./speechRecognizer"
+import { createSpeechRecognizer } from "../Speech/speechRecognizer"
 
 interface Props {
     onSend: (text: string) => void

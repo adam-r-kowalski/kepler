@@ -2,6 +2,7 @@ import { createContext, JSXElement, useContext } from "solid-js"
 import { createStore, produce } from "solid-js/store"
 import { useBackend } from "../Backend/Backend"
 import { useUUID } from "../UUID"
+import { createSpeaker } from "../Speech/speechSynthesizer"
 
 export interface Message {
     kind: "sent" | "rate limit" | "received"
@@ -68,6 +69,8 @@ export const ConversationsProvider = (props: Props) => {
                 break
             case "success":
                 const text = received.text
+                const speaker = await createSpeaker()!
+                speaker.speak(text)
                 setStore(
                     uuid,
                     "messages",
